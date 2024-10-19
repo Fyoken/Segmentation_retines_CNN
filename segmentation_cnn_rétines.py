@@ -19,18 +19,18 @@ from tensorflow.keras import layers, models
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
-drive.mount('/content/gdrive')
+#drive.mount('/content/gdrive')
 
 # Créer le dossier pour les images prétraitées s'il n'existe pas déjà
-output_folder = "/content/gdrive/MyDrive/DRIVE/training/preprocessed_training"
-output_folder2 = "/content/gdrive/MyDrive/DRIVE/test/preprocessed_test"
+output_folder = "./preprocessed_training"
+output_folder2 = "./preprocessed_test"
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 if not os.path.exists(output_folder2):
     os.makedirs(output_folder2)
 
 # Chemin vers le dossier contenant les images d'entraînement
-input_folder = "/content/gdrive/MyDrive/DRIVE/training/images"
+input_folder = "./training/images"
 
 def preprocessed(input_folder, mask_folder, output_folder):
     # Liste de fichiers dans le dossier
@@ -78,13 +78,13 @@ def preprocessed(input_folder, mask_folder, output_folder):
 
     print("Prétraitement terminé. Les images prétraitées ont été enregistrées au format .jpg dans le dossier", output_folder)
 
-mask_folder = "/content/gdrive/MyDrive/DRIVE/training/mask"
+mask_folder = "./training/mask"
 preprocessed(input_folder, mask_folder, output_folder)
 
-input_folder = "/content/gdrive/MyDrive/DRIVE/training/preprocessed_training"
+input_folder = "./preprocessed_training"
 
 # Chemin vers le dossier contenant les images ground truth (segmentées à la main) au format .jpg
-gt_folder = "/content/gdrive/MyDrive/DRIVE/training/1st_manual"
+gt_folder = "./training/1st_manual"
 
 # Liste de fichiers dans le dossier
 image_files = os.listdir(input_folder)
@@ -129,14 +129,14 @@ y_data = np.array(y_data)
 X_train, X_val, y_train, y_val = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
 
 # Charger l'ensemble de test à partir du dossier "test"
-test_folder = "/content/gdrive/MyDrive/DRIVE/test/images"
+test_folder = "./test/images"
 
 # Liste de fichiers dans le dossier
 test_image_files = os.listdir(test_folder)
 X_test = []
-test_mask_folder = "/content/gdrive/MyDrive/DRIVE/test/mask"
+test_mask_folder = "./test/mask"
 preprocessed(test_folder, test_mask_folder, output_folder2)
-test_folder = "/content/gdrive/MyDrive/DRIVE/test/preprocessed_test"
+test_folder = "./test/preprocessed_test"
 test_image_files = os.listdir(test_folder)
 
 # Taille des patchs
@@ -201,7 +201,7 @@ model.summary()
 model.fit(X_train, y_train, epochs=60, verbose=1)
 
 # Chemin pour enregistrer le modèle
-model_save_path = "/content/gdrive/MyDrive/DRIVE/training/model_saved.h5"
+model_save_path = "./training/model_saved.h5"
 
 # Sauvegarder le modèle
 model.save(model_save_path)
@@ -285,7 +285,7 @@ for i in range(len(test_image_files)):
     segmented_images.append(segmented_image)
 
 # Créer un dossier "segmented" s'il n'existe pas
-output_folder_segmented = "/content/gdrive/MyDrive/DRIVE/test/segmented"
+output_folder_segmented = "./test/segmented"
 if not os.path.exists(output_folder_segmented):
     os.makedirs(output_folder_segmented)
 
